@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container" id="arithmetic">
+    <div class="row">
+        <h2>Mathematical Calculation in C++ </h2>
+        <p><b>Coming Soon: Algebra, Calculus, Geometry, Trigonometry and Statistics functions will be added in the next
+            update.
+        </b></p>
+    </div>
+    <div class="row">
+        <div class="col" id="maths-btn-left">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-light button-list">
+                    <a href="{{ url_for('arithmetic_fibonacci') }}">Fibonacci Sequence</a>
+                </li>
+                <li class="list-group-item list-group-item-light button-list">
+                    <a href="{{ url_for('arithmetic_quadratic') }}">Quadratic Roots</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10" id="maths-form-right">
+            <div class="container" id="inside-maths-form-container">
+                <div class="content-section">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        {% if legend == 'Fibonacci' %}
+                        <fieldset class="form-group">
+                            <legend class="border-bottom mb-4">{{ legend }}</legend>
+                            <div class="form-group">
+                                {{ form.start.label(class="form-control-label") }}
+                                {% if form.start.errors %}
+                                {{ form.start(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.start.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.start(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.range.label(class="form-control-label") }}
+                                {% if form.range.errors %}
+                                {{ form.range(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.range.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.range(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-outline-info") }}
+                        </div>
+                        {% else %}
+                        <fieldset class="form-group">
+                            <legend class="border-bottom mb-4">{{ legend }}</legend>
+                            <div class="form-group">
+                                {{ form.a.label(class="form-control-label") }}
+                                {% if form.a.errors %}
+                                {{ form.a(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.a.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.a(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.b.label(class="form-control-label") }}
+                                {% if form.b.errors %}
+                                {{ form.b(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.b.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.b(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.c.label(class="form-control-label") }}
+                                {% if form.c.errors %}
+                                {{ form.c(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.c.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.c(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-outline-info") }}
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% if result is not none %}
+            <h3 class="border-bottom mb-4 border-dark">Result</h3>
+            {% if legend == 'Fibonacci' %}
+            <h5> Fibonacci Sequence: {% for r in result %} {{ r }} {% endfor %}</h5>
+            {% else %}
+            <h5> Quadratic Roots: {% for r in result %} {{ r }} {% endfor %}</h5>
+            {% endif %}
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

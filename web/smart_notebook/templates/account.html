@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<!--Account Profile-->
+<div class="content-section">
+    <div class="media">
+        <img class="rounded-circle article-img user_image"
+             src="{{ url_for('static', filename='user_images/' + current_user.user_image) }}">
+        <div class="media-body">
+            <h2 class="account-heading">{{ current_user.first_name }} {{ current_user.last_name }}</h2>
+            <span class="heading"><b>Username: </b>{{ current_user.username }}</span><br>
+            <span class="heading"><b>Email: </b>{{ current_user.email }}</span><br>
+            <span class="heading"><b>Phone Number: </b>{{ current_user.phone_number }}</span><br>
+            <span class="heading"><b>Postal Code: </b>{{ current_user.postal_code }}</span><br>
+            <a class="btn btn-info btn-sm mt-1 mb-1"
+               href="{{ url_for('edit_account') }}">Edit Profile</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

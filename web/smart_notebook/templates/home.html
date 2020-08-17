@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3 class="border-bottom mb-4 border-dark">MY POSTS</h3>
+
+<!-- Search Bar -->
+<form method="POST" class="form-inline">
+    {{ form.hidden_tag() }}
+    <div class="form-group search">
+        {{ form.search_content(class="form-control form-control-lg", placeholder="Search notes") }}
+    </div>
+    <div class="form-group search">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+
+<!-- Pos Bar -->
+{% for note in notes %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2">{{ note.author.username }}</a>
+            <small class="text-muted">{{ note.date_posted.strftime('%Y-%m-%d') }}</small>
+        </div>
+        <h3><a class="article-title" href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h3>
+        <p class="article-content">{{ note.content }}</p>
+    </div>
+</article>
+{% endfor %}
+{% endblock content %}
