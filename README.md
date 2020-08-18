@@ -91,5 +91,5 @@ User can easily access and update account information.
 ## Inspiration
 1. Flask - https://www.youtube.com/user/schafer5
 2. Docker - https://testdriven.io/blog/dockerizing-flask-with-postgres-gunicorn-and-nginx/
-4. Translation via Azure - https://docs.microsoft.com/en-us/azure/cognitive-services/translator/quickstart-translate?pivots=programming-language-python
-3. Personal Project - https://csil-git1.cs.surrey.sfu.ca/amacknoj/
+3. Translation via Azure - https://docs.microsoft.com/en-us/azure/cognitive-services/translator/quickstart-translate?pivots=programming-language-python
+4. Personal web development project - https://csil-git1.cs.surrey.sfu.ca/amacknoj/orca
