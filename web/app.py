@@ -14,8 +14,8 @@ def create_db():
 
 @cli.command("seed_db")
 def seed_db():
-    db.session.add(User(id=0, username="NULL", first_name="NULL", last_name="NULL", email="NULL", phone_number="NULL", postal_code="NULL", password="$2b$12$ppAg.mOnlIo15d0m7gPYr.1LZaUvuO29JVVBkv6bkQzQz6zK.f66y", user_image="default.jpg"))
-    db.session.add(User(username="ArsalanMacknojia", first_name="Arsalan", last_name="Macknojia", email="arsalan@gmail.com", phone_number="7781111111", postal_code="V3E3B5", password="$2b$12$ppAg.mOnlIo15d0m7gPYr.1LZaUvuO29JVVBkv6bkQzQz6zK.f66y", user_image="default.jpg"))
+    db.session.add(User(id=0, username="NULL", first_name="NULL", last_name="NULL", email="NULL", password="$2b$12$ppAg.mOnlIo15d0m7gPYr.1LZaUvuO29JVVBkv6bkQzQz6zK.f66y", user_image="default.jpg"))
+    db.session.add(User(username="BrettMacleod", first_name="Brett", last_name="Macleod", email="brett@live.com", password="$2b$12$ppAg.mOnlIo15d0m7gPYr.1LZaUvuO29JVVBkv6bkQzQz6zK.f66y", user_image="default.jpg"))
     db.session.commit()
 
     db.session.add(Note(title="Team Meeting Minutes", content="No more tickets lefts. Time to catch up on sleep.", user_id=1))

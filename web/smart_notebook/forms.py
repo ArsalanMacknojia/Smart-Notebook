@@ -25,8 +25,6 @@ class SignUpForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=20)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
-    phone_number = StringField('Phone ', validators=[DataRequired(), Length(min=10, max=16)])
-    postal_code = StringField('Postal Code ', validators=[DataRequired(), Length(max=10)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=60)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
@@ -40,10 +38,6 @@ class SignUpForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('There is an existing account associated with this email.')
-
-    def validate_phone_number(self, phone_number):
-        if not phone_number.data.isnumeric():
-            raise ValidationError('Phone number must be numbers only.')
 
 
 # ------------------------------------------------Forgot Pass-----------------------------------------------------------
@@ -88,8 +82,6 @@ class AccountUpdateForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=20)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
-    phone_number = StringField('Phone ', validators=[DataRequired(), Length(min=10, max=16)])
-    postal_code = StringField('Postal Code ', validators=[DataRequired(), Length(max=6)])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg'])])
     submit = SubmitField('Update')
 
@@ -104,10 +96,6 @@ class AccountUpdateForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('There is an existing account associated with this email.')
-
-    def validate_phone_number(self, phone_number):
-        if not phone_number.data.isnumeric():
-            raise ValidationError('Phone number must be numbers only.')
 
 
 # -------------------------------------------------Search---------------------------------------------------------------

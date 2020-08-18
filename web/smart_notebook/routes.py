@@ -2,6 +2,7 @@ import os
 import uuid
 import ctypes
 import logging
+import requests
 from PIL import Image
 from flask_mail import Message
 from sqlalchemy import or_, and_
@@ -50,9 +51,7 @@ def sign_up():
     if form.validate_on_submit():
         hash_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, first_name=form.first_name.data, last_name=form.last_name.data,
-                    email=form.email.data, phone_number=form.phone_number.data,
-                    postal_code=form.postal_code.data.replace(" ", "").upper(),
-                    password=hash_pw)
+                    email=form.email.data, password=hash_pw)
         db.session.add(user)
         db.session.commit()
         user = User.query.filter_by(email=form.email.data).first()
@@ -194,8 +193,6 @@ def delete_note(note_id):
 @app.route("/account/", methods=['GET'])
 @login_required
 def get_account():
-    # user = User.query.filter_by(id=current_user.id).first()
-    # return render_template('account.html', account=user), 200
     return render_template('account.html')
 
 
@@ -227,8 +224,6 @@ def edit_account():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.email = form.email.data
-        current_user.phone_number = form.phone_number.data
-        current_user.postal_code = form.postal_code.data.upper()
         db.session.commit()
         flash('Account updated!', 'success')
         return redirect(url_for('edit_account'))
@@ -237,8 +232,6 @@ def edit_account():
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
         form.email.data = current_user.email
-        form.phone_number.data = current_user.phone_number
-        form.postal_code.data = current_user.postal_code
     user_image = url_for('static', filename='user_images/' + current_user.user_image)
     return render_template('edit_account.html', title='Edit Account', user_image=user_image, form=form)
 
@@ -253,17 +246,9 @@ def autocomplete():
     return jsonify(matching_results=results)
 
 
-# ------------------------------------------------Catch All-------------------------------------------------------------
-
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return render_template('error.html')
-
-
 # ------------------------------------------------Arithmetic------------------------------------------------------------
 
-# Helper Functions
+# C++ Arithmetic Functions
 def c_fib(start, length):
     path = "{},smart_notebook,c_arithmetic,arithmetic.so".format(os.getcwd())
     path = path.split(",")
@@ -286,11 +271,10 @@ def c_quad_roots(a, b, c):
     return c_arithmetic.quadRoots(ctypes.c_int(a), ctypes.c_int(b), ctypes.c_int(c))
 
 
-# Default Arithmetic
+# Default Arithmetic Page
 @app.route("/arithmetic/", methods=['GET', 'POST'])
 def arithmetic():
-    form = FibonacciForm()
-    return render_template('arithmetic.html', form=form, legend='Fibonacci', result=None)
+    return render_template('arithmetic.html', form=None, legend=None, result=None)
 
 
 # Fibonacci Sequence
@@ -301,8 +285,8 @@ def arithmetic_fibonacci():
         start = form.start.data
         length = form.range.data
         result = c_fib(start, length)
-        return render_template('arithmetic.html', form=form, legend='Fibonacci', result=result)
-    return render_template('arithmetic.html', form=form, legend='Fibonacci', result=None)
+        return render_template('arithmetic.html', form=form, legend='Fibonacci Sequence', result=result)
+    return render_template('arithmetic.html', form=form, legend='Fibonacci Sequence', result=None)
 
 
 # Quadratic Sequence
@@ -314,5 +298,47 @@ def arithmetic_quadratic():
         b = form.b.data
         c = form.c.data
         result = c_quad_roots(a, b, c)
-        return render_template('arithmetic.html', form=form, legend='Quadratic', result=result)
-    return render_template('arithmetic.html', form=form, legend='Quadratic', result=None)
+        return render_template('arithmetic.html', form=form, legend='Quadratic Roots', result=result)
+    return render_template('arithmetic.html', form=form, legend='Quadratic Roots', result=None)
+
+
+# ------------------------------------------------Translate-------------------------------------------------------------
+
+# English to Translation using Azure Translator
+def translate_to_french(text):
+    key = app.config['TRANSLATOR_KEY']
+    region = app.config['TRANSLATOR_REGION']
+    endpoint = app.config['TRANSLATOR_TEXT_ENDPOINT']
+    if not key or not region or not endpoint:
+        return 'Error: Translation service is not configured.'
+
+    path = '/translate?api-version=3.0'
+    params = '&to=fr'
+    url = endpoint + path + params
+    headers = {'Ocp-Apim-Subscription-Key': key,
+               'Content-type': 'application/json',
+               'X-ClientTraceId': str(uuid.uuid4()),
+               'Ocp-Apim-Subscription-Region': region
+               }
+    body = [{'text': text}]
+    r = requests.post(url, headers=headers, json=body)
+
+    if r.status_code != 200:
+        return 'Error: Azure translation service failed to respond.'
+
+    response = r.json()
+    return response[0]["translations"][0]["text"]
+
+
+@app.route('/translate', methods=['POST'])
+@login_required
+def translate_text():
+    return jsonify({'text': translate_to_french(request.form['text'])})
+
+
+# ------------------------------------------------Catch All-------------------------------------------------------------
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template('error.html')
