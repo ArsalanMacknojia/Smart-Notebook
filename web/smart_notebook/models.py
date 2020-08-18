@@ -1,8 +1,7 @@
 import logging
-from smart_notebook import db
 from datetime import datetime
 from flask_login import UserMixin
-from smart_notebook import login_manager, app
+from smart_notebook import login_manager, app, db
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 LOGGER = logging.getLogger(__name__)
@@ -22,8 +21,6 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    phone_number = db.Column(db.String(16), nullable=False)
-    postal_code = db.Column(db.String(6), nullable=False)
     password = db.Column(db.String(60), nullable=False)
     user_image = db.Column(db.String(40), default='default.jpg')
     notes = db.relationship('Note', backref='author', lazy=True, foreign_keys='Note.user_id')

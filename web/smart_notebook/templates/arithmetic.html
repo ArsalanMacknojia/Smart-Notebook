@@ -21,10 +21,13 @@
         </div>
         <div class="col-10" id="maths-form-right">
             <div class="container" id="inside-maths-form-container">
+                {% if form is none %}
+                <p><b> <= Click on the buttons on the left to perform calculations.</b></p>
+                {% else %}
                 <div class="content-section">
                     <form method="POST" action="">
                         {{ form.hidden_tag() }}
-                        {% if legend == 'Fibonacci' %}
+                        {% if legend == 'Fibonacci Sequence' %}
                         <fieldset class="form-group">
                             <legend class="border-bottom mb-4">{{ legend }}</legend>
                             <div class="form-group">
@@ -106,16 +109,16 @@
                         {% endif %}
                     </form>
                 </div>
+                {% endif %}
             </div>
             {% if result is not none %}
             <h3 class="border-bottom mb-4 border-dark">Result</h3>
-            {% if legend == 'Fibonacci' %}
+            {% if legend == 'Fibonacci Sequence' %}
             <h5> Fibonacci Sequence: {% for r in result %} {{ r }} {% endfor %}</h5>
             {% else %}
             <h5> Quadratic Roots: {% for r in result %} {{ r }} {% endfor %}</h5>
             {% endif %}
             {% endif %}
-
         </div>
     </div>
 </div>

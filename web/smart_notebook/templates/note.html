@@ -1,29 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='javascript/translate.js') }}"></script>
+
 <article class="media content-section">
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2">{{ note.author.username }}</a>
-            <small class="text-muted">{{ note.date_posted.strftime('%Y-%m-%d') }}</small>
+            <small>|</small>
+            <small class="mr-2">{{ note.date_posted.strftime('%Y-%m-%d') }}</small>
         </div>
-        <h2 class="article-title">{{ note.title }}</h2>
-        <p class="article-content">{{ note.content }}</p>
+        <h2 class="article-title"><span id="note-title-{{ note.id }}">{{ note.title }}</span></h2>
+        <p class="article-content"><span id="note{{ note.id }}">{{ note.content }}</span></p>
         <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1"
+            <a class="btn btn-primary btn-sm mt-1 mb-1"
+               href="javascript:translate('#note{{ note.id }}', '#note{{ note.id }}', 'en','fr');"> Translate to
+                French </a>
+            <a class="btn btn-primary btn-sm mt-1 mb-1"
                href="{{ url_for('update_note', note_id=note.id) }}">Update</a>
-            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">
+            <button type="button" class="btn btn-danger btn-sm mt-1 mb-1" data-toggle="modal"
+                    data-target="#deleteModal">
                 Delete
             </button>
         </div>
     </div>
 </article>
-<!-- Modal -->
+
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete note?</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Delete Note?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
