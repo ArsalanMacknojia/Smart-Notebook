@@ -12,7 +12,7 @@ Docker & Docker Compose
 
 #### To Run
 ```
-1. git clone https://csil-git1.cs.surrey.sfu.ca/amacknoj/polygot.git
+1. git clone https://github.com/ArsalanMacknojia/Smart-Notebook.git
 2. cd deployment
 3. docker-compose build && docker-compose up
 4. Go to http://localhost:8080/
